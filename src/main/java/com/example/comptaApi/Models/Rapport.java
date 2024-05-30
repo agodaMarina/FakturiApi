@@ -4,11 +4,12 @@ package com.example.comptaApi.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
+@Data
 
-@Entity
 public class Rapport {
     @Id
     private int id;
@@ -20,35 +21,6 @@ public class Rapport {
 
     private String Contenu;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getTitre() {
-        return titre;
-    }
-
-    public void setTitre(String titre) {
-        this.titre = titre;
-    }
-
-    public Date getDate_creation() {
-        return date_creation;
-    }
-
-    public void setDate_creation(Date date_creation) {
-        this.date_creation = date_creation;
-    }
-
-    public String getContenu() {
-        return Contenu;
-    }
-
-    public void setContenu(String contenu) {
-        Contenu = contenu;
-    }
 }

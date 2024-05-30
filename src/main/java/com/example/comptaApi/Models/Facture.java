@@ -1,14 +1,19 @@
 package com.example.comptaApi.Models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.File;
 
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+
 public class Facture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,75 +27,9 @@ public class Facture {
     private File photo;
     private String etat;
 
-    public int getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "compte_id")
+    private Compte compte;
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public String getProprietaire() {
-        return proprietaire;
-    }
-
-    public void setProprietaire(String proprietaire) {
-        this.proprietaire = proprietaire;
-    }
-
-    public double getTva() {
-        return tva;
-    }
-
-    public void setTva(double tva) {
-        this.tva = tva;
-    }
-
-    public double getTotaltva() {
-        return totaltva;
-    }
-
-    public void setTotaltva(double totaltva) {
-        this.totaltva = totaltva;
-    }
-
-    public double getTotalttc() {
-        return totalttc;
-    }
-
-    public void setTotalttc(double totalttc) {
-        this.totalttc = totalttc;
-    }
-
-    public File getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(File photo) {
-        this.photo = photo;
-    }
-
-    public String getEtat() {
-        return etat;
-    }
-
-    public void setEtat(String etat) {
-        this.etat = etat;
-    }
 }
