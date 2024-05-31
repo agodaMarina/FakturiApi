@@ -9,7 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.util.Date;
 @Data
-
+@Entity
 public class Rapport {
     @Id
     private int id;
@@ -20,7 +20,5 @@ public class Rapport {
     private Date date_creation;
 
     private String Contenu;
-
-
 
 }

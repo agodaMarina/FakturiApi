@@ -1,6 +1,8 @@
 package com.example.comptaApi.Services;
 
 import com.example.comptaApi.Models.Facture;
+import com.example.comptaApi.Repositories.FactureRepository;
+import lombok.Data;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,9 @@ import java.util.List;
 
 
 @Service
+@Data
 public class FactureServiceImpl implements FactureService {
+    private final FactureRepository factureRepository;
 
     private final Tesseract tesseract;
     public static final String BASEURL="C:\\Users\\AGODA Marina\\Documents\\IPNET INSTITUTE OF TECHNOLOGY\\STAGE\\TRUSTLINE\\Projet Comptabilité\\captures";
@@ -27,7 +31,8 @@ public class FactureServiceImpl implements FactureService {
     FileWriter fileWriter = new FileWriter(file, false);
     private BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
-    public FactureServiceImpl(Tesseract tesseract) throws IOException {
+    public FactureServiceImpl(FactureRepository factureRepository, Tesseract tesseract) throws IOException {
+        this.factureRepository = factureRepository;
         this.tesseract = tesseract;
     }
 
@@ -70,13 +75,13 @@ public class FactureServiceImpl implements FactureService {
     }*/
 
     @Override
-    public void addFacture() {
-
+    public void addFacture(Facture facture) {
+        factureRepository.save(facture);
     }
 
     @Override
-    public void deleteFacture() {
-
+    public void deleteFacture(Long id) {
+        factureRepository.deleteById(id);
     }
 
     @Override
@@ -86,7 +91,7 @@ public class FactureServiceImpl implements FactureService {
 
     @Override
     public List<Facture> getAllFactures() {
-        return List.of();
+        return factureRepository.findAll();
     }
 
     @Override

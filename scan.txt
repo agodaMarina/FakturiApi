@@ -1,0 +1,147 @@
+{
+  "ocr_type" : "receipts",
+  "request_id" : "P_102.64.163.43_lwuo0e1e_wdx",
+  "ref_no" : "ocr_java_123'",
+  "file_name" : "fac.jpg",
+  "request_received_on" : 1717158795027,
+  "success" : true,
+  "image_width" : 952,
+  "image_height" : 1280,
+  "image_rotation" : 0.020,
+  "recognition_completed_on" : 1717158795391,
+  "receipts" : [ {
+    "merchant_name" : "LE CHAMPION",
+    "merchant_address" : null,
+    "merchant_phone" : null,
+    "merchant_website" : null,
+    "merchant_tax_reg_no" : null,
+    "merchant_company_reg_no" : null,
+    "region" : null,
+    "mall" : null,
+    "country" : "US",
+    "receipt_no" : "151081350",
+    "date" : "2024-05-18",
+    "time" : "02:22",
+    "items" : [ {
+      "amount" : 1850.00,
+      "category" : null,
+      "description" : "PRINGLES CHIPS TEXAS PC",
+      "flags" : "",
+      "qty" : null,
+      "remarks" : null,
+      "tags" : null,
+      "unitPrice" : null
+    }, {
+      "amount" : 1300.00,
+      "category" : null,
+      "description" : "BF GALETTES BRETONNE PC",
+      "flags" : "",
+      "qty" : null,
+      "remarks" : null,
+      "tags" : null,
+      "unitPrice" : null
+    }, {
+      "amount" : 1400.00,
+      "category" : null,
+      "description" : "OREO FOUNRE CACAOTE PC",
+      "flags" : "",
+      "qty" : null,
+      "remarks" : null,
+      "tags" : null,
+      "unitPrice" : null
+    }, {
+      "amount" : 600.00,
+      "category" : null,
+      "description" : "LINDT CUILLERE CHOCO PC",
+      "flags" : "",
+      "qty" : null,
+      "remarks" : null,
+      "tags" : null,
+      "unitPrice" : null
+    } ],
+    "currency" : "USD",
+    "total" : 5150.00,
+    "subtotal" : null,
+    "tax" : null,
+    "service_charge" : null,
+    "tip" : null,
+    "payment_method" : null,
+    "payment_details" : null,
+    "credit_card_type" : null,
+    "credit_card_number" : null,
+    "ocr_text" : "         LE CHAMPION\n                AGBALEPEDO\n Ship: 000000P151000072709\n Staff: JUDITH          Trans: 151081350\n Date: 05/18/24 2:22\n Description                   Amount\n PRINGLES CHIPS TEXAS PC      1,850.00\n BF GALETTES BRETONNE PC      1,300.00\n OREO FOUNRE CACAOTE PC       1.400.00\n LINDT CUILLERE CHOCO PC        600.00\n Total CFA                     5.150.00\n                              10,150.00\n Esp ce                        5,000.00\n                                      4\n Number of Items:",
+    "ocr_confidence" : 92.49,
+    "width" : 849,
+    "height" : 1027,
+    "avg_char_width" : 21.413,
+    "avg_line_height" : 37.4131,
+    "conf_amount" : 83,
+    "source_locations" : {
+      "date" : [ [ {
+        "x" : 186,
+        "y" : 391
+      }, {
+        "x" : 509,
+        "y" : 397
+      }, {
+        "x" : 508,
+        "y" : 446
+      }, {
+        "x" : 185,
+        "y" : 440
+      } ] ],
+      "total" : [ [ {
+        "x" : 660,
+        "y" : 844
+      }, {
+        "x" : 845,
+        "y" : 845
+      }, {
+        "x" : 845,
+        "y" : 890
+      }, {
+        "x" : 660,
+        "y" : 889
+      } ] ],
+      "receipt_no" : [ [ {
+        "x" : 685,
+        "y" : 358
+      }, {
+        "x" : 883,
+        "y" : 357
+      }, {
+        "x" : 882,
+        "y" : 395
+      }, {
+        "x" : 684,
+        "y" : 396
+      } ] ],
+      "merchant_name" : [ [ {
+        "x" : 208,
+        "y" : 80
+      }, {
+        "x" : 681,
+        "y" : 96
+      }, {
+        "x" : 678,
+        "y" : 165
+      }, {
+        "x" : 206,
+        "y" : 149
+      } ] ],
+      "doc" : [ [ {
+        "x" : -11,
+        "y" : 27
+      }, {
+        "x" : 923,
+        "y" : 46
+      }, {
+        "x" : 901,
+        "y" : 1175
+      }, {
+        "x" : -33,
+        "y" : 1157
+      } ] ]
+    }
+  } ]
+}

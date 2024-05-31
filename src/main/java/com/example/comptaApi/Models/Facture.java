@@ -13,7 +13,6 @@ import java.io.File;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class Facture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
