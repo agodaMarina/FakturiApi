@@ -36,6 +36,10 @@ public class User implements UserDetails, Principal {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private boolean enabled=true;
+
+    private boolean isaccountLocked=false;
+
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
@@ -66,17 +70,20 @@ public class User implements UserDetails, Principal {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+
+        return !this.isaccountLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
+
         return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+
+        return this.enabled;
     }
 
     public String fullName() {

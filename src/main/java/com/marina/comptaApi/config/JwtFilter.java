@@ -1,5 +1,6 @@
 package com.marina.comptaApi.config;
 
+import com.marina.comptaApi.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,10 +24,11 @@ public class JwtFilter  extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
-    public JwtFilter(JwtService jwtService, UserDetailsService userDetailsService) {
+    private final TokenRepository tokenRepository;
+    public JwtFilter(JwtService jwtService, UserDetailsService userDetailsService, TokenRepository tokenRepository) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.tokenRepository = tokenRepository;
     }
 
 
@@ -49,7 +51,10 @@ public class JwtFilter  extends OncePerRequestFilter {
         userEmail=jwtService.extractEmail(jwt);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            if(jwtService.isvalidateToken(jwt,userDetails)){
+            var isTokenValid = tokenRepository.findByToken(jwt)
+                    .map(t-> !t.isExpired() && !t.isRevoked())
+                    .orElse(false);
+            if(jwtService.isvalidateToken(jwt,userDetails) && isTokenValid){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

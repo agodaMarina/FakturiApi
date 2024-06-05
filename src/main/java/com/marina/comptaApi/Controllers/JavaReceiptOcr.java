@@ -18,7 +18,7 @@ public class JavaReceiptOcr {
 
     public static void main(String[] args) throws Exception {
         String receiptOcrEndpoint = "https://ocr.asprise.com/api/v1/receipt"; // Receipt OCR API endpoint
-        File imageFile = new File("fac.jpg");
+        File imageFile = new File("test.jpg");
 
         System.out.println("=== Informations relevées ===");
 
@@ -32,11 +32,11 @@ public class JavaReceiptOcr {
                     .build());
 
             try (CloseableHttpResponse response = client.execute(post)) {
-//                File info= new File("test.txt");
+//                File info= new File("test2.txt");
 //                BufferedWriter bufferedWriter = new BufferedWriter(new java.io.FileWriter(info));
 //
 //                bufferedWriter.write(EntityUtils.toString(response.getEntity()));
-//                bufferedWriter.close();
+
                 System.out.println(EntityUtils.toString(response.getEntity())); // Receipt OCR result in JSON
             }
         }

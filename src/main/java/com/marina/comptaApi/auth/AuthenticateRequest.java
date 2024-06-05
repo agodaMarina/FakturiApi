@@ -1,5 +1,6 @@
 package com.marina.comptaApi.auth;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,9 @@ import lombok.Setter;
 @Setter
 @Builder
 public class AuthenticateRequest {
+    @NotEmpty(message = "veuillez entrer votre email ")
     private String email;
+
+    @NotEmpty(message = "veuillez entrer un mot de passe ")
     private String password;
 }
