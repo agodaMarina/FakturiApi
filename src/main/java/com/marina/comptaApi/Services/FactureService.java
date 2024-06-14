@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface FactureService {
 
-    public String getImageString(MultipartFile multipartFile) throws TesseractException, IOException;
+//    public String getImageString(MultipartFile multipartFile) throws TesseractException, IOException;
     public void addFacture(Facture facture);
     public void deleteFacture(Long id);
     public Facture getFacture();
