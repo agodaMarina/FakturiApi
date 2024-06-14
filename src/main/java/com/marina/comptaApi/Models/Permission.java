@@ -16,6 +16,7 @@ public enum Permission {
     MANAGER_CREATE("comptable:create"),
     MANAGER_DELETE("comptable:delete")
 
+
     ;
     private final String permission;
 }

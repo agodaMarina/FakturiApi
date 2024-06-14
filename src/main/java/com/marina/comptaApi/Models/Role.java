@@ -33,8 +33,10 @@ public enum Role {
                     Permission.MANAGER_UPDATE,
                     Permission.MANAGER_DELETE,
                     Permission.MANAGER_CREATE
+
             )
     )
+
 
     ;
 

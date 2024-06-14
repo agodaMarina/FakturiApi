@@ -1,24 +1,20 @@
 package com.marina.comptaApi;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.marina.comptaApi.Services.ExcelService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import net.sourceforge.tess4j.Tesseract;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @SpringBootApplication()
-
+@EnableScheduling
 @EnableAsync
 public class ComptaApiApplication {
 

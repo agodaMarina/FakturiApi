@@ -18,7 +18,9 @@ public class RapportServiceImpl implements RapportService {
 
     @Override
     public Rapport generateRapport( Rapport rapport) {
-         return repository.save(rapport);
+//         rapport =
+
+        return repository.save(rapport);
     }
 
     @Override
@@ -33,6 +35,7 @@ public class RapportServiceImpl implements RapportService {
 
     @Override
     public void updateRapport(Rapport rapport) {
+
         repository.save(rapport);
     }
 
@@ -45,6 +48,7 @@ public class RapportServiceImpl implements RapportService {
 
     @Override
     public List<Rapport> getAllRapport() {
+
         return repository.findAll();
     }
 }

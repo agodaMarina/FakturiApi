@@ -12,6 +12,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin("*")
 public class AuthenticationController {
     private final AuthenticationService service;
 
@@ -29,7 +30,7 @@ public class AuthenticationController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping("/activate-account")
+    @GetMapping("/activate_account")
     public void activeAccount(@RequestParam String token) throws MessagingException {
         service.activateAccount(token);
     }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,25 +20,19 @@ public class Facture {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column
-    private String date;
+    private LocalDateTime date;
     @Column
     private String numero;
-    @Column
-    private String proprietaire;
     @Column
     private double tva;
     @Column
     private double totaltva;
     @Column
     private double totalttc;
-    @Column
-    private File photo;
-    @Column
-    private String etat;
 
-    @ManyToOne
-    @JoinColumn(name = "compte_id")
-    private Compte compte;
+//    @ManyToOne
+//    @JoinColumn(name = "compte_id")
+//    private Compte compte;
 
 
 }

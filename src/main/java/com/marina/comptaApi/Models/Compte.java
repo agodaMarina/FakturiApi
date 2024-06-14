@@ -23,7 +23,7 @@ public class Compte {
     private String description;
 
 
-    @OneToMany(mappedBy = "compte")
-    private List<Facture> factures;
+//    @OneToMany(mappedBy = "compte")
+//    private List<Facture> factures;
 
 }

@@ -21,6 +21,10 @@ public class RegistrationRequest {
     @NotEmpty(message = "votre email doit être valide --->test@example.com")
     private String email;
 
+    @NotBlank(message = "veuillez entrer votre numero de téléphone")
+    @NotEmpty(message = "Veuillez entrer votre numéro de téléphone")
+    private String telephone;
+
     @NotBlank(message = "veuillez entrer un mot de passe ")
     private String password;
 

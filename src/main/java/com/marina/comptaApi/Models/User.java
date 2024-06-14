@@ -3,10 +3,13 @@ package com.marina.comptaApi.Models;
 import com.marina.comptaApi.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,18 +33,25 @@ public class User implements UserDetails, Principal {
     @Column(length = 100, unique = true)
     private String email;
 
+    @Column(length = 100)
+    private String telephone;
+
     @Column()
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private boolean enabled=true;
+    private boolean accountLocked;
+    private boolean enabled;
 
-    private boolean isaccountLocked=false;
-
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+//    @CreatedDate
+//    @Column(nullable = false, updatable = false)
+//    private LocalDateTime createdDate;
+//
+//    @LastModifiedDate
+//    @Column(insertable = false)
+//    private LocalDateTime lastModifiedDate;
 
     @Override
     public String getName() {
@@ -71,7 +81,7 @@ public class User implements UserDetails, Principal {
     @Override
     public boolean isAccountNonLocked() {
 
-        return !this.isaccountLocked;
+        return !accountLocked;
     }
 
     @Override
@@ -83,7 +93,7 @@ public class User implements UserDetails, Principal {
     @Override
     public boolean isEnabled() {
 
-        return this.enabled;
+        return enabled;
     }
 
     public String fullName() {

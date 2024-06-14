@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
@@ -30,8 +32,8 @@ public class LogoutService implements LogoutHandler {
         var storedToken = tokenRepository.findByToken(jwt)
                 .orElse(null);
         if (storedToken != null) {
-            storedToken.setExpired(true);
-            storedToken.setRevoked(true);
+            storedToken.setValidatedAt(null);
+            storedToken.setExpiresAt(LocalDateTime.now());
             tokenRepository.save(storedToken);
             SecurityContextHolder.clearContext();
         }

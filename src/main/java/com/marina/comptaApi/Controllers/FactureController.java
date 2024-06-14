@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/facture")
+@CrossOrigin("*")
 @AllArgsConstructor
 public class FactureController {
 
@@ -65,11 +66,13 @@ public class FactureController {
 
     @PostMapping("/addFacture")
     public void ajoutFactureManuelle(@RequestBody Facture facture){
+
         factureService.addFacture(facture);
     }
 
     @GetMapping("/getFacture")
     public List<Facture> getFacture(){
+
         return factureService.getAllFactures();
     }
 
