@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Rapport {
     private String titre;
 
     @CreatedDate
-    private LocalDate date;
+    private LocalDateTime date;
 
 //    @OneToMany(mappedBy = "facture")
 //    private List<Facture> contenu;

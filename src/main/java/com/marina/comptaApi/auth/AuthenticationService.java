@@ -1,9 +1,6 @@
 package com.marina.comptaApi.auth;
-
-
 import com.marina.comptaApi.Email.EmailService;
 import com.marina.comptaApi.Email.EmailTemplateName;
-
 import com.marina.comptaApi.Models.Role;
 import com.marina.comptaApi.config.JwtService;
 import com.marina.comptaApi.token.Token;

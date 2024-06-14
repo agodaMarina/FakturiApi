@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class GenRapport {
     @Autowired
     private RapportRepository rapportRepository;
 
-    public byte[] generatePdf(LocalDate startDate, LocalDate endDate, String username) throws IOException {
-        List<Facture> factures = factureRepository.findByDateBetween(startDate.toString(), endDate.toString());
+    public byte[] generatePdf(LocalDateTime startDate, LocalDateTime endDate, String username) throws IOException {
+        List<Facture> factures = factureRepository.findByDateBetween(startDate, endDate);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
@@ -54,7 +55,7 @@ public class GenRapport {
         double totalAmount = 0;
         for (Facture facture : factures) {
             table.addCell(new Cell().add(new Paragraph(facture.getNumero())));
-            table.addCell(new Cell().add(new Paragraph(facture.getDate())));
+            table.addCell(new Cell().add(new Paragraph(String.valueOf(facture.getDate()))));
             table.addCell(new Cell().add(new Paragraph(String.valueOf(facture.getTotalttc()))));totalAmount += facture.getTotalttc();
         }
 
@@ -68,8 +69,8 @@ public class GenRapport {
 
     @Scheduled(cron = "0 0 0 1 * ?")
     public void generateMonthlyReport() throws IOException {
-        LocalDate startDate = LocalDate.now().withDayOfMonth(1);
-        LocalDate endDate = LocalDate.now();
+        LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1);
+        LocalDateTime endDate = LocalDateTime.now();
         byte[] pdfData = generatePdf(startDate, endDate, null);
         // Save or send the PDF data as needed
     }

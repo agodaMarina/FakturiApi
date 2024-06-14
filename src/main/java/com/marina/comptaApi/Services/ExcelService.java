@@ -43,7 +43,7 @@ public class ExcelService {
                 compte.setDescription(formatter.formatCellValue(descriptionCell));
 
                 //System.out.println(compte.getCode());
-                compteRepository.save(compte);
+//                compteRepository.save(compte);
             }
         }
     }
