@@ -18,16 +18,12 @@ public class RapportServiceImpl implements RapportService {
 
     @Override
     public Rapport generateRapport( Rapport rapport) {
-//         rapport =
-
         return repository.save(rapport);
     }
-
     @Override
     public void sendRapport() {
         //toDo send rapport
     }
-
     @Override
     public void deleteRapport(int id) {
         repository.deleteById(id);
@@ -38,14 +34,10 @@ public class RapportServiceImpl implements RapportService {
 
         repository.save(rapport);
     }
-
-
     @Override
     public Rapport getRapport(LocalDate date_creation) {
         return repository.findByDate(date_creation);
     }
-
-
     @Override
     public List<Rapport> getAllRapport() {
 
