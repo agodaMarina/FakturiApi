@@ -18,7 +18,6 @@ import java.io.IOException;
 @EnableAsync
 public class ComptaApiApplication {
 
-
 	public static void main(String[] args) throws IOException {
 
 		SpringApplication.run(ComptaApiApplication.class, args);

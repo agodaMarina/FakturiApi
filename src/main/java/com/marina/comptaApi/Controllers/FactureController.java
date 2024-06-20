@@ -65,9 +65,10 @@ public class FactureController {
 //    }
 
     @PostMapping("/addFacture")
-    public void ajoutFactureManuelle(@RequestBody Facture facture){
+    public ResponseEntity<String> ajoutFactureManuelle(@RequestBody Facture facture){
 
         factureService.addFacture(facture);
+        return new ResponseEntity<>("Facture ajoutée avec succès", HttpStatus.OK);
     }
 
     @GetMapping("/getFacture")

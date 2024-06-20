@@ -1,8 +1,9 @@
 package com.marina.comptaApi.Services;
 
 import jakarta.persistence.Entity;
+import org.springframework.stereotype.Service;
 
-@Entity
+@Service
 public class GenarateExcel {
 
     public void generateExcel() {
