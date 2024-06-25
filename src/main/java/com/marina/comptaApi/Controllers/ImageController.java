@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("images")
+@CrossOrigin("*")
 public class ImageController {
 
     private final ImageService imageService;
@@ -35,6 +36,13 @@ public class ImageController {
                 .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
 
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<?>> getAllImages(){
+        List<?> images=imageService.getImage();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(images);
     }
 
 }

@@ -12,16 +12,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -93,11 +93,27 @@ public class AuthenticationService {
         userRepository.save(user);
     }
 
-    public User getProfile() {
-        //récupérer l'utilisateur connecté
+    public Optional<Optional<User>> getProfile() {
+        // récupérer l'utilisateur connecté
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
-            return (User) auth.getPrincipal();
+            Object principal = auth.getPrincipal();
+            if (principal instanceof User) {
+                System.out.println("principal = " + ((User) principal).fullName());
+                return (Optional<Optional<User>>) principal;
+            } else if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                System.out.println("username = " + username);
+                // Utilisez le nom d'utilisateur pour récupérer l'objet User depuis votre base de données ou un autre service
+                return Optional.ofNullable(userRepository.findByEmail(username));
+
+            } else if (principal instanceof String) {
+                String username = (String) principal;
+                // Utilisez le nom d'utilisateur pour récupérer l'objet User depuis votre base de données ou un autre service
+                return Optional.ofNullable(userRepository.findByEmail(username)); // suppose qu'il y a une méthode dans userService pour récupérer l'utilisateur
+            } else {
+                throw new IllegalStateException("Type de principal non supporté : " + principal.getClass().getName());
+            }
         }
         throw new IllegalStateException("Utilisateur non authentifié");
     }
@@ -149,7 +165,7 @@ public class AuthenticationService {
                 user.getEmail(),
                 user.fullName(),
                 EmailTemplateName.ACTIVATE_ACCOUNT,
-                "http://localhost:8080/api/v1/auth/activate_account?token="+newToken,
+                "http://localhost:4200/auth/activate_account?token="+newToken,
                 newToken,
                 "Activation de compte"
         );

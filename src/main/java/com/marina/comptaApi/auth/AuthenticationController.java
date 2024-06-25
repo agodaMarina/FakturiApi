@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -62,7 +63,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/profile")
-    public User getProfile(){
+    public Optional<Optional<User>> getProfile(){
 
         return service.getProfile();
     }
