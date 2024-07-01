@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -17,8 +19,10 @@ public class ExcelService {
 
     @Autowired
     private CompteRepository compteRepository;
+
     DataFormatter formatter = new DataFormatter(Locale.FRANCE);
-    public void save(String filePath) throws IOException {
+    public List<Compte> save(String filePath) throws IOException {
+        List<Compte> listeComptes = new ArrayList<>();
         try (InputStream is = new FileInputStream(filePath)) {
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
@@ -33,19 +37,15 @@ public class ExcelService {
                 if (codeCell == null || descriptionCell == null) {
                     continue; // sauter les lignes vides
                 }
-
-//                String code=formatter.formatCellValue(codeCell);
-//                String description=formatter.formatCellValue(descriptionCell);
-//                System.out.println(code);
-//                System.out.println(description);
-                Compte compte = new Compte();
-                compte.setCode(formatter.formatCellValue(codeCell));
-                compte.setDescription(formatter.formatCellValue(descriptionCell));
-
-                //System.out.println(compte.getCode());
-//                compteRepository.save(compte);
+                Compte compte = Compte.builder()
+                        .code(formatter.formatCellValue(codeCell))
+                        .description(formatter.formatCellValue(descriptionCell))
+                        .build();
+                listeComptes.add(compte);
+                //compteRepository.save(compte);
             }
         }
+        return listeComptes;
     }
 }
 

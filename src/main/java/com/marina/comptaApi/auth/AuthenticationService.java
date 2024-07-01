@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -93,24 +94,13 @@ public class AuthenticationService {
         userRepository.save(user);
     }
 
-    public Optional<Optional<User>> getProfile() {
+    public User getProfile() {
         // récupérer l'utilisateur connecté
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             Object principal = auth.getPrincipal();
             if (principal instanceof User) {
-                System.out.println("principal = " + ((User) principal).fullName());
-                return (Optional<Optional<User>>) principal;
-            } else if (principal instanceof UserDetails) {
-                String username = ((UserDetails) principal).getUsername();
-                System.out.println("username = " + username);
-                // Utilisez le nom d'utilisateur pour récupérer l'objet User depuis votre base de données ou un autre service
-                return Optional.ofNullable(userRepository.findByEmail(username));
-
-            } else if (principal instanceof String) {
-                String username = (String) principal;
-                // Utilisez le nom d'utilisateur pour récupérer l'objet User depuis votre base de données ou un autre service
-                return Optional.ofNullable(userRepository.findByEmail(username)); // suppose qu'il y a une méthode dans userService pour récupérer l'utilisateur
+                return (User) principal;
             } else {
                 throw new IllegalStateException("Type de principal non supporté : " + principal.getClass().getName());
             }
@@ -173,6 +163,30 @@ public class AuthenticationService {
 
     private String generateActivationCode() {
         return String.valueOf((int) (Math.random() * Math.pow(10, 6)));
+    }
+
+    public List<User>findUsers(){
+        return userRepository.findAll();
+    }
+
+
+    public User LockAccount(Long id){
+        User user = userRepository.findById(id).get();
+        user.setAccountLocked(true);
+        user.setEnabled(false);
+        return user;
+    }
+
+    public User unLockAccount(Long id){
+        User user = userRepository.findById(id).get();
+        user.setAccountLocked(false);
+        user.setEnabled(true);
+        return user;
+    }
+
+
+    public User getOneUser(Long id){
+        return userRepository.getById(id);
     }
 
 }

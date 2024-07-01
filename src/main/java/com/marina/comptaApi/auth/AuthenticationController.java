@@ -3,10 +3,13 @@ package com.marina.comptaApi.auth;
 
 import com.marina.comptaApi.Models.User;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -16,10 +19,12 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AuthenticationController {
     private final AuthenticationService service;
+    private final LogoutService logoutService;
 
 
-    public AuthenticationController(AuthenticationService service, LogoutService logoutService) {
+    public AuthenticationController(AuthenticationService service, LogoutService logoutService, LogoutService logoutService1) {
         this.service = service;
+        this.logoutService = logoutService1;
     }
 
     @PostMapping("/register")
@@ -63,9 +68,15 @@ public class AuthenticationController {
     }
 
     @GetMapping("/profile")
-    public Optional<Optional<User>> getProfile(){
+    public User getProfile(){
 
         return service.getProfile();
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        logoutService.logout(request, response, authentication);
+        return ResponseEntity.status(HttpStatus.OK).body("Logout successful");
     }
 
 }

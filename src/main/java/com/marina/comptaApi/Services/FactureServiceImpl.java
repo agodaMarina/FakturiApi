@@ -1,20 +1,20 @@
 package com.marina.comptaApi.Services;
 
 import com.marina.comptaApi.Models.Facture;
+import com.marina.comptaApi.Models.User;
 import com.marina.comptaApi.Repositories.FactureRepository;
 import lombok.Data;
 import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -76,7 +76,25 @@ public class FactureServiceImpl implements FactureService {
 
     @Override
     public void addFacture(Facture facture) {
-        factureRepository.save(facture);
+        User user1=new User();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            Object principal = auth.getPrincipal();
+            if (principal instanceof User) {
+                user1= (User) principal;
+            } else {
+                throw new IllegalStateException("Type de principal non supporté : " + principal.getClass().getName());
+            }
+        }
+        Facture facture1 = Facture.builder()
+                .date(LocalDateTime.now())
+                .tva(facture.getTva())
+                .numero(facture.getNumero())
+                .totaltva(facture.getTotaltva())
+                .totalttc(facture.getTotalttc())
+                .user(user1)
+                .build();
+        factureRepository.save(facture1);
     }
 
     @Override
@@ -92,6 +110,38 @@ public class FactureServiceImpl implements FactureService {
     @Override
     public List<Facture> getAllFactures() {
         return factureRepository.findAll();
+    }
+
+    @Override
+    public ByteArrayInputStream exportFacturesToExcel() throws IOException {
+        String[] columns = {"Numero","Date", "tva", "Total Tva", "Total TTC"};
+
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Factures");
+
+            // Header row
+            Row headerRow = sheet.createRow(0);
+            for (int col = 0; col < columns.length; col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(columns[col]);
+            }
+
+            // Data rows
+            List<Facture> factures = getAllFactures();
+            int rowIdx = 1;
+            for (Facture facture : factures) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(facture.getNumero());
+                row.createCell(1).setCellValue(facture.getDate().toString());
+                row.createCell(2).setCellValue(facture.getTva());
+                row.createCell(3).setCellValue(facture.getTotaltva());
+                row.createCell(4).setCellValue(facture.getTotalttc());
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        }
     }
 
     @Override

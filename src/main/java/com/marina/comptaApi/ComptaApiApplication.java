@@ -34,15 +34,15 @@ public class ComptaApiApplication {
 
 }
 
-@Component
-@RequiredArgsConstructor
-class ExcelServiceRunner implements CommandLineRunner{
-
-	private final ExcelService excelService;
-	@Override
-	public void run(String... args) throws Exception {
-		String filePath = "comptes.xlsx"; // chemin du fichier excel
-		excelService.save(filePath);
-
-	}
-}
+//@Component
+//@RequiredArgsConstructor
+//class ExcelServiceRunner implements CommandLineRunner{
+//
+//	private final ExcelService excelService;
+//	@Override
+//	public void run(String... args) throws Exception {
+//		String filePath = "comptes.xlsx"; // chemin du fichier excel
+//		excelService.save(filePath);
+//
+//	}
+//}
