@@ -28,7 +28,7 @@ public class Rapport {
     @CreatedDate
     private LocalDateTime date;
 
-//    @OneToMany(mappedBy = "facture")
+//    @OneToMany()
 //    private List<Facture> contenu;
 
 }

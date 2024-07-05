@@ -1,6 +1,7 @@
 package com.marina.comptaApi.Controllers;
 
 
+import com.marina.comptaApi.Models.ImageData;
 import com.marina.comptaApi.Services.ImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class ImageController {
 
     @PostMapping("/saveImage")
     public ResponseEntity<?> uploadImage(@RequestParam("image")MultipartFile file) throws IOException {
-        String uploadImage = imageService.uploadImage(file);
+        ImageData uploadImage = imageService.uploadImage(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(uploadImage);
     }

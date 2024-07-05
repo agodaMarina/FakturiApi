@@ -1,7 +1,6 @@
 package com.marina.comptaApi.Services;
 
 import com.marina.comptaApi.Models.Compte;
-import com.marina.comptaApi.Repositories.CompteRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,10 @@ import java.util.Locale;
 @Service
 public class ExcelService {
 
-    @Autowired
-    private CompteRepository compteRepository;
-
     DataFormatter formatter = new DataFormatter(Locale.FRANCE);
     public List<Compte> save(String filePath) throws IOException {
         List<Compte> listeComptes = new ArrayList<>();
+        Compte compte=new Compte();
         try (InputStream is = new FileInputStream(filePath)) {
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
@@ -37,12 +34,11 @@ public class ExcelService {
                 if (codeCell == null || descriptionCell == null) {
                     continue; // sauter les lignes vides
                 }
-                Compte compte = Compte.builder()
-                        .code(formatter.formatCellValue(codeCell))
-                        .description(formatter.formatCellValue(descriptionCell))
-                        .build();
+                compte.setId((int) row.getRowNum());
+                compte.setCode(formatter.formatCellValue(codeCell));
+                compte.setDescription(formatter.formatCellValue(descriptionCell));
                 listeComptes.add(compte);
-                //compteRepository.save(compte);
+
             }
         }
         return listeComptes;

@@ -2,20 +2,26 @@ package com.marina.comptaApi.Models;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.File;
 import java.time.LocalDateTime;
 
+@Entity
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Builder
-public class Facture {
+public class Vente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
+
+    @Column
+    private String client;
 
     @Column
     private LocalDateTime dateEmission;
@@ -36,6 +42,5 @@ public class Facture {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
 
 }

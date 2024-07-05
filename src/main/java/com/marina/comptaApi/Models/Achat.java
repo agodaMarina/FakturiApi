@@ -1,26 +1,27 @@
 package com.marina.comptaApi.Models;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-public class Facture {
+public class Achat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
+    private Long id;
     @Column
     private LocalDateTime dateEmission;
     @Column
     private String numero;
+
     @Column
     private double tva;
     @Column
@@ -37,5 +38,10 @@ public class Facture {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column
+    private String fournisseur;
+
+    @Column
+    private LocalDate dateEcheance;
 
 }

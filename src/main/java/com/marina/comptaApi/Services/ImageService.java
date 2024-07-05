@@ -18,17 +18,15 @@ public class ImageService{
     @Autowired
     private ImageRepository repository;
 
-    public String uploadImage(MultipartFile file) throws IOException {
+    public ImageData uploadImage(MultipartFile file) throws IOException {
 
-        ImageData imageData = repository.save(ImageData.builder()
+        //        if (imageData != null) {
+//            return "Image enregitré avec succes : " + file.getOriginalFilename();
+//        }
+        return repository.save(ImageData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
-
-        if (imageData != null) {
-            return "Image enregitré avec succes : " + file.getOriginalFilename();
-        }
-        return null;
     }
 
     public byte[] downloadImage(String fileName){
