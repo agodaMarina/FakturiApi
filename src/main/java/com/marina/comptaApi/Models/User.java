@@ -39,6 +39,9 @@ public class User implements UserDetails, Principal {
     @Column()
     private String password;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Solde> solde;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

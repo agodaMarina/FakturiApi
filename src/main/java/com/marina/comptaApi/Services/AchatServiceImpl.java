@@ -2,6 +2,7 @@ package com.marina.comptaApi.Services;
 
 import com.marina.comptaApi.Models.*;
 import com.marina.comptaApi.Repositories.AchatRepository;
+import com.marina.comptaApi.auth.AuthenticationService;
 import com.marina.comptaApi.utils.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,8 @@ public class AchatServiceImpl implements AchatService {
 
     private final AchatRepository achatRepository;
     private final ImageService imageService;
+    private final AuthenticationService userService;
+    private final SoldeService soldeService;
 
     @Override
     public Achat save(Achat achat, MultipartFile file) throws IOException {
@@ -43,8 +46,16 @@ public class AchatServiceImpl implements AchatService {
                 .build();
         achatRepository.save(achat1);
 
+        Solde solde = soldeService.soldeActuel(user1.getId());
+        if (solde != null) {
+            solde.setSolde(solde.getSolde()-achat1.getTotalttc());
+        }
         return  achat1;
+    }
 
+    @Override
+    public Optional<List<Achat>> findByUser() {
+        return achatRepository.findByUserId(userService.getProfile().getId());
     }
 
     @Override

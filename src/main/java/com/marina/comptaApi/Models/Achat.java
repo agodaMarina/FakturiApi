@@ -17,7 +17,7 @@ public class Achat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
+    @Column(nullable = true)
     private LocalDateTime dateEmission;
     @Column
     private String numero;
@@ -31,7 +31,7 @@ public class Achat {
 
     private boolean statut;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private ImageData image;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -41,7 +41,7 @@ public class Achat {
     @Column
     private String fournisseur;
 
-    @Column
+    @Column(nullable = true)
     private LocalDate dateEcheance;
 
 }
