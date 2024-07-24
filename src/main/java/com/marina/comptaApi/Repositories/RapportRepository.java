@@ -9,5 +9,5 @@ import java.util.Date;
 
 @Repository
 public interface RapportRepository extends JpaRepository<Rapport, Integer> {
-    Rapport findByDate(LocalDate date_creation);
+    Rapport findByDateDebut(LocalDate date_creation);
 }

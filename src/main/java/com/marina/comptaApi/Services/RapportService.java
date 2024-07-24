@@ -9,10 +9,9 @@ import java.util.List;
 
 public interface RapportService {
 
-    public Rapport generateRapport(Rapport rapport);
-    public void sendRapport();
-    public void deleteRapport(int id);
-    public void updateRapport(Rapport rapport);
-    public Rapport getRapport(LocalDate date_creation);
-    public List<Rapport> getAllRapport();
+     Rapport generateRapport(Rapport rapport);
+     void sendRapport();
+     void deleteRapport(int id);
+     Rapport getRapport(LocalDate date_creation);
+     List<Rapport> getAllRapport();
 }

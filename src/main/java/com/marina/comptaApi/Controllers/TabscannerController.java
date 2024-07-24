@@ -64,9 +64,6 @@ public class TabscannerController {
     }
 
 
-
-
-
     //fonction pour redimentionner l'image
     private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
         Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
@@ -90,7 +87,6 @@ public class TabscannerController {
         }
         return formatName;
     }
-
     private String sendToTabscanner(File file) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost uploadFile = new HttpPost(API_URL);
@@ -104,22 +100,20 @@ public class TabscannerController {
             HttpResponse response = httpClient.execute(uploadFile);
             HttpEntity responseEntity = response.getEntity();
 
-//            //recupération du token dans la réponse envoyée par le post
-//            ObjectMapper mapper = new ObjectMapper();
-//            String responseString=EntityUtils.toString(responseEntity);
-//            TabPostResponse tabscannerResponse = mapper.readValue(responseString, TabPostResponse.class);
-//            String token = tabscannerResponse.getToken();
-//
-//            //envoie dela requete get pour avoir le resultat de l'analyse :
-//            HttpGet getResults = new HttpGet(API + "/" + token);
-//            getResults.addHeader("apikey", API_KEY);
-//            HttpResponse response2=httpClient.execute(getResults);
-//            HttpEntity responseEntity2 = response2.getEntity();
+            //recupération du token dans la réponse envoyée par le post
+            ObjectMapper mapper = new ObjectMapper();
+            String responseString=EntityUtils.toString(responseEntity);
+            TabPostResponse tabscannerResponse = mapper.readValue(responseString, TabPostResponse.class);
+            String token = tabscannerResponse.getToken();
 
-
+            //envoie dela requete get pour avoir le resultat de l'analyse :
+            HttpGet getResults = new HttpGet(API + "/" + token);
+            getResults.addHeader("apikey", API_KEY);
+            HttpResponse response2=httpClient.execute(getResults);
+            HttpEntity responseEntity2 = response2.getEntity();
 
             if (responseEntity != null) {
-                return EntityUtils.toString(responseEntity);
+                return EntityUtils.toString(responseEntity2);
             } else {
                 throw new IOException("No response from Tabscanner API");
             }

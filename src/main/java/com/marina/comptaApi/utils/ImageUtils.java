@@ -6,7 +6,7 @@ import java.util.zip.Inflater;
 
 public class ImageUtils {
 
-
+    private final String FOLDER_PATH="/Users/javatechie/Desktop/MyFIles/";
     public static byte[] compressImage(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setLevel(Deflater.BEST_COMPRESSION);
@@ -41,4 +41,6 @@ public class ImageUtils {
         }
         return outputStream.toByteArray();
     }
+
+
 }

@@ -29,10 +29,11 @@ public class Achat {
     @Column
     private double totalttc;
 
+    @Column
     private boolean statut;
 
     @OneToOne(cascade = CascadeType.MERGE)
-    private ImageData image;
+    private FileData image;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
@@ -44,4 +45,7 @@ public class Achat {
     @Column(nullable = true)
     private LocalDate dateEcheance;
 
+    public boolean getStatut() {
+        return statut;
+    }
 }

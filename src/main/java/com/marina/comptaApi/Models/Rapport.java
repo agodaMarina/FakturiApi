@@ -8,9 +8,8 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -26,9 +25,13 @@ public class Rapport {
     private String titre;
 
     @CreatedDate
-    private LocalDateTime date;
+    private LocalDate dateDebut;
 
-//    @OneToMany()
-//    private List<Facture> contenu;
+    private LocalDate dateFin;
 
+    @OneToMany()
+    private List<Achat> achats;
+
+    @OneToOne()
+    private User user;
 }
