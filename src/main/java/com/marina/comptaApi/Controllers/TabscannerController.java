@@ -1,7 +1,7 @@
 package com.marina.comptaApi.Controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marina.comptaApi.Models.TabPostResponse;
+import com.marina.comptaApi.Models.Ocr.TabPostResponse;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

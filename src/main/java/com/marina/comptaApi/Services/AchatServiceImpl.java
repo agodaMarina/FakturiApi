@@ -4,6 +4,7 @@ import com.marina.comptaApi.Models.*;
 import com.marina.comptaApi.Repositories.AchatRepository;
 import com.marina.comptaApi.auth.AuthenticationService;
 import com.marina.comptaApi.utils.ImageUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -31,6 +33,7 @@ public class AchatServiceImpl implements AchatService {
     private final AuthenticationService userService;
     private final SoldeService soldeService;
 
+    @Transactional
     @Override
     public Achat save(Achat achat, MultipartFile file) throws IOException {
         User user1=new User();
@@ -43,22 +46,21 @@ public class AchatServiceImpl implements AchatService {
                 throw new IllegalStateException("Type de principal non supporté : " + principal.getClass().getName());
             }
         }
+        FileData filedata=imageService.upload(file);
         Achat achat1 = Achat.builder()
-                .dateEmission(achat.getDateEmission())
+                .dateEmission(LocalDate.now())
                 .dateEcheance(achat.getDateEcheance())
                 .tva(achat.getTva())
-                .numero(achat.getNumero())
+                .numero(generateInvoiceNumber())
                 .totaltva(achat.getTotaltva())
                 .totalttc(achat.getTotalttc())
+                .fournisseur(achat.getFournisseur())
+                .categorie(achat.getCategorie())
                 .user(user1)
-                .image(imageService.upload(file))
+                .image(filedata)
                 .build();
         achatRepository.save(achat1);
-
-        Solde solde = soldeService.soldeActuel(user1.getId());
-        if (solde != null) {
-            solde.setSolde(solde.getSolde()-achat1.getTotalttc());
-        }
+        soldeService.updateSolde(user1, achat.getTotalttc(),"DEPENSE");
         return  achat1;
     }
 
@@ -94,7 +96,7 @@ public class AchatServiceImpl implements AchatService {
     }
 
 //exporter les factures en format excel
-    public ByteArrayInputStream exportFacturesToExcel() throws IOException {
+    public ByteArrayInputStream exportFacturesToExcel(List<Long>ids) throws IOException {
         String[] columns = {"Numero","Fournisseur", "tva", "Total Tva", "Total TTC","statut","Date Emission"};
 
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -108,7 +110,7 @@ public class AchatServiceImpl implements AchatService {
             }
 
             // Data rows
-            List<Achat> factures =findAll();
+            List<Achat> factures =achatRepository.findByIdIn(ids);
            int rowIdx = 1;
             for (Achat facture : factures) {
                Row row = sheet.createRow(rowIdx++);
@@ -131,5 +133,16 @@ public class AchatServiceImpl implements AchatService {
     @Override
     public List<Achat> findBetweenDates(LocalDate date1, LocalDate date2) {
         return achatRepository.findByDateEmissionBetween(date1, date2);
+    }
+
+    public static String generateInvoiceNumber() {
+        // Préfixe "INV"
+        String prefix = "#INV";
+        // Générer 3 chiffres aléatoires
+        Random random = new Random();
+        int randomNumber = random.nextInt(900) + 100; // Nombres entre 100 et 999
+
+        // Concaténer le préfixe et les chiffres aléatoires
+        return prefix + randomNumber;
     }
 }

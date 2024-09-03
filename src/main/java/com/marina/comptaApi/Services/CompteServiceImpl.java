@@ -1,10 +1,10 @@
 package com.marina.comptaApi.Services;
-
+/*
 public class CompteServiceImpl implements CompteService {
 
 
 
-    /*
+
     @Service
 public class FactureService {
 
@@ -56,5 +56,6 @@ public class FactureService {
 }
 
 
-    */
+
 }
+ */

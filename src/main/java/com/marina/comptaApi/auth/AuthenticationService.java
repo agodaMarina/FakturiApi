@@ -1,7 +1,14 @@
 package com.marina.comptaApi.auth;
+
 import com.marina.comptaApi.Email.EmailService;
 import com.marina.comptaApi.Email.EmailTemplateName;
 import com.marina.comptaApi.Models.Role;
+import com.marina.comptaApi.Models.Solde;
+import com.marina.comptaApi.Models.dona.Client;
+import com.marina.comptaApi.Models.dona.Comptable;
+import com.marina.comptaApi.Repositories.SoldeRepository;
+import com.marina.comptaApi.Repositories.test.ClientRepository;
+import com.marina.comptaApi.Repositories.test.ComptableRepository;
 import com.marina.comptaApi.config.JwtService;
 import com.marina.comptaApi.token.Token;
 import com.marina.comptaApi.token.TokenRepository;
@@ -19,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -30,20 +38,29 @@ public class AuthenticationService {
 
 
     private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final ComptableRepository comptableRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
     private final TokenRepository tokenRepository;
+    private final SoldeRepository soldeRepository;
 
     public void register(RegistrationRequest request) throws MessagingException {
 
-        Role role = request.getRole().equalsIgnoreCase("administrateur")? Role.ADMIN
-                : request.getRole().equalsIgnoreCase("comptable")?Role.MANAGER
+        Role role = request.getRole().equalsIgnoreCase("administrateur") ? Role.ADMIN
+                : request.getRole().equalsIgnoreCase("comptable") ? Role.MANAGER
                 : Role.USER;
-        if(userRepository.findByEmail(request.getEmail()).isPresent()){
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalStateException("Email déjà utilisé");
         }
+        var solde = Solde.builder()
+                .date(LocalDate.now())
+                .solde(0.0)
+                .soldeCritique(0.0)
+                .build();
+        soldeRepository.save(solde);
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -51,13 +68,39 @@ public class AuthenticationService {
                 .telephone(request.getTelephone())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
+                .solde(solde)
+                .created(LocalDateTime.now())
                 .accountLocked(false)
                 .enabled(false)
                 .build();
 
-      userRepository.save(user);
+        userRepository.save(user);
+        sendEmaliValidation(user);
+        solde.setUser(user);
+        soldeRepository.save(solde);
 
-      sendEmaliValidation(user);
+
+        if (request.getRole().equalsIgnoreCase("comptable")) {
+            var comptable = Comptable.builder()
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(request.getEmail())
+                    .created(LocalDateTime.now())
+                    .telephone(request.getTelephone())
+                    .role(request.getRole())
+                    .build();
+            comptableRepository.save(comptable);
+        } else if (request.getRole().equalsIgnoreCase("client")) {
+            var client = Client.builder()
+                    .firstName(request.getFirstName())
+                    .lastName(request.getLastName())
+                    .email(request.getEmail())
+                    .created(LocalDateTime.now())
+                    .telephone(request.getTelephone())
+                    .role(request.getRole())
+                    .build();
+            clientRepository.save(client);
+        }
 
 
     }
@@ -155,7 +198,7 @@ public class AuthenticationService {
                 user.getEmail(),
                 user.fullName(),
                 EmailTemplateName.ACTIVATE_ACCOUNT,
-                "http://localhost:4200/auth/activate_account?token="+newToken,
+                "http://localhost:4200/auth/activate_account?token=" + newToken,
                 newToken,
                 "Activation de compte"
         );
@@ -165,19 +208,19 @@ public class AuthenticationService {
         return String.valueOf((int) (Math.random() * Math.pow(10, 6)));
     }
 
-    public List<User>findUsers(){
+    public List<User> findUsers() {
         return userRepository.findAll();
     }
 
 
-    public User LockAccount(Long id){
+    public User LockAccount(Long id) {
         User user = userRepository.findById(id).get();
         user.setAccountLocked(true);
         user.setEnabled(false);
         return user;
     }
 
-    public User unLockAccount(Long id){
+    public User unLockAccount(Long id) {
         User user = userRepository.findById(id).get();
         user.setAccountLocked(false);
         user.setEnabled(true);
@@ -185,8 +228,16 @@ public class AuthenticationService {
     }
 
 
-    public User getOneUser(Long id){
+    public User getOneUser(Long id) {
         return userRepository.getById(id);
+    }
+
+    public List<User>getClients(){
+        return  userRepository.findByRole(Role.USER);
+    }
+
+    public List<User>getComptable(){
+        return userRepository.findByRole(Role.MANAGER);
     }
 
 }

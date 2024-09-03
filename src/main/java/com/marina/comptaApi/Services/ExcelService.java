@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Service
+
 public class ExcelService {
 
     DataFormatter formatter = new DataFormatter(Locale.FRANCE);

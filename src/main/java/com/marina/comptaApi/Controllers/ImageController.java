@@ -23,28 +23,28 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/saveImage")
-    public ResponseEntity<?> uploadImage(@RequestParam("image")MultipartFile file) throws IOException {
-        ImageData uploadImage = imageService.uploadImage(file);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(uploadImage);
-    }
+//    @PostMapping("/saveImage")
+//    public ResponseEntity<?> uploadImage(@RequestParam("image")MultipartFile file) throws IOException {
+//        ImageData uploadImage = imageService.uploadImage(file);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(uploadImage);
+//    }
 
-    @GetMapping("/{fileName}")
-    public ResponseEntity<?> downloadImage(@PathVariable String fileName){
-        byte[] imageData=imageService.downloadImage(fileName);
-        return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf("image/png"))
-                .body(imageData);
-
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<?>> getAllImages(){
-        List<?> images=imageService.getImage();
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(images);
-    }
+//    @GetMapping("/{fileName}")
+//    public ResponseEntity<?> downloadImage(@PathVariable String fileName){
+//        byte[] imageData=imageService.downloadImage(fileName);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .contentType(MediaType.valueOf("image/png"))
+//                .body(imageData);
+//
+//    }
+//
+//    @GetMapping("/all")
+//    public ResponseEntity<List<?>> getAllImages(){
+//        List<?> images=imageService.getImage();
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(images);
+//    }
 
 }
 

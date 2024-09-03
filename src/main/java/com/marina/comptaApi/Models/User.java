@@ -1,5 +1,6 @@
 package com.marina.comptaApi.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.marina.comptaApi.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,6 +32,7 @@ public class User implements UserDetails, Principal {
     private String lastName;
 
     @Column(length = 100, unique = true)
+    //yabode3449@maxturns.com
     private String email;
 
     @Column(length = 100)
@@ -39,14 +41,19 @@ public class User implements UserDetails, Principal {
     @Column()
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Solde> solde;
+    @OneToOne
+    @JsonBackReference //pour gérer la récursivité de la sérialisation
+    private Solde solde;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private boolean accountLocked;
+
     private boolean enabled;
+
+    private LocalDateTime created;
+
 
     @Override
     public String getName() {

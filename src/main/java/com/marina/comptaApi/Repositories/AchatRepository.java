@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface AchatRepository extends JpaRepository<Achat,Long> {
     Optional<List<Achat>>findByUserId(Long id);
-    List<Achat> findByDateEmissionBetween(LocalDate date1, LocalDate date2);
+    List<Achat> findByDateEmissionBetween(LocalDate startDate, LocalDate endDate);
+
+    List<Achat>findByIdIn(List<Long> ids);
 
 }

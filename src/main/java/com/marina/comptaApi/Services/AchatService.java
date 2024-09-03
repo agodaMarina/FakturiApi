@@ -23,7 +23,7 @@ public interface AchatService {
 
     List<Achat> findAll();
 
-    ByteArrayInputStream exportFacturesToExcel() throws IOException;
+    ByteArrayInputStream exportFacturesToExcel(List<Long>ids) throws IOException;
 
     List<Achat> findBetweenDates(LocalDate date1, LocalDate date2);
 

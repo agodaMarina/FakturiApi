@@ -1,25 +1,37 @@
 package com.marina.comptaApi.Models;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 
-
+@Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-public class FileData {
+public class Revenu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String type;
-    private String filePath;
+    @Column
+    private double montant;
+
+    @Column
+    private String description;
+
+    @CreatedDate
+    private LocalDateTime date;
+
+    @ManyToOne
+    private User user;
+
+
 }

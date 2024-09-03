@@ -3,6 +3,7 @@ package com.marina.comptaApi.Controllers;
 
 import com.marina.comptaApi.Models.Achat;
 import com.marina.comptaApi.Services.AchatService;
+import com.marina.comptaApi.exception.SoldeNegatifException;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,17 @@ public class AchatController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Achat> addAchat(@RequestPart Achat achat, @RequestPart MultipartFile file) throws IOException {
-        return ResponseEntity.status(HttpStatus.OK).body(achatService.save(achat, file));
+    public ResponseEntity<?> addAchat(@RequestPart Achat achat, @RequestPart MultipartFile file) throws IOException {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(achatService.save(achat, file));
+        }catch (SoldeNegatifException e){
+            return ResponseEntity.badRequest().body(new IOException(e.getMessage()));
+        }
+
     }
 
     @GetMapping("/all")
     public Optional<List<Achat>> getAllAchats(){
-
         return achatService.findByUser();
     }
 
@@ -55,9 +60,9 @@ public class AchatController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/export/excel")
-    public ResponseEntity<InputStreamResource> exportFacturesToExcel() throws IOException {
-        ByteArrayInputStream in = achatService.exportFacturesToExcel();
+    @PostMapping ("/export/excel")
+    public ResponseEntity<InputStreamResource> exportFacturesToExcel(@RequestBody List<Long>ids) throws IOException {
+        ByteArrayInputStream in = achatService.exportFacturesToExcel(ids);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=factures.xlsx");

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 
 @Entity
@@ -17,13 +17,14 @@ public class Achat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = true)
-    private LocalDateTime dateEmission;
+
+    private LocalDate dateEmission;
     @Column
     private String numero;
 
     @Column
     private double tva;
+
     @Column
     private double totaltva;
     @Column
@@ -45,7 +46,13 @@ public class Achat {
     @Column(nullable = true)
     private LocalDate dateEcheance;
 
+    @ManyToOne
+    private Categorie categorie;
+
     public boolean getStatut() {
         return statut;
     }
+
+
+
 }

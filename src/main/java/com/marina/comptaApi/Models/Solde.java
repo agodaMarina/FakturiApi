@@ -1,21 +1,19 @@
 package com.marina.comptaApi.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Solde {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private double solde;
@@ -24,7 +22,8 @@ public class Solde {
 
     private LocalDate date;
 
-    @ManyToOne(  )
+    @OneToOne
+    @JsonManagedReference
     private User user;
 
 }

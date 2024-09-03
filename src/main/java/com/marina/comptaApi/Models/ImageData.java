@@ -5,8 +5,7 @@ import lombok.*;
 
 
 
-@Entity
-@Table(name = "ImageData")
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

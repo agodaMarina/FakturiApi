@@ -2,18 +2,26 @@ package com.marina.comptaApi.auth;
 
 
 import com.marina.comptaApi.Models.User;
+import com.marina.comptaApi.Models.dona.Client;
+import com.marina.comptaApi.Models.dona.Comptable;
+import com.marina.comptaApi.Repositories.test.ClientRepository;
+import com.marina.comptaApi.Repositories.test.ClientService;
+import com.marina.comptaApi.Repositories.test.ComptableRepository;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin("*")
@@ -22,10 +30,6 @@ public class AuthenticationController {
     private final LogoutService logoutService;
 
 
-    public AuthenticationController(AuthenticationService service, LogoutService logoutService, LogoutService logoutService1) {
-        this.service = service;
-        this.logoutService = logoutService1;
-    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -69,7 +73,6 @@ public class AuthenticationController {
 
     @GetMapping("/profile")
     public User getProfile(){
-
         return service.getProfile();
     }
 
@@ -77,6 +80,21 @@ public class AuthenticationController {
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         logoutService.logout(request, response, authentication);
         return ResponseEntity.status(HttpStatus.OK).body("Logout successful");
+    }
+
+    @GetMapping("/details/{id}")
+    public User getDetails(@PathVariable Long id){
+        return service.getOneUser(id);
+    }
+
+    @GetMapping("/listClient")
+    public List<User>getClient(){
+        return service.getClients();
+    }
+
+    @GetMapping("/listComptable")
+    public List<User> getComptable(){
+        return service.getComptable();
     }
 
 }
